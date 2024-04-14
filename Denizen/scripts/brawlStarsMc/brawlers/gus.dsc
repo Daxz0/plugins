@@ -118,6 +118,10 @@ gus_handler:
     type: world
     debug: false
     events:
+        on player quits flagged:bs.decay_shield:
+            - define data <player.flag[bs.decay_shield]>
+            - remove <[data.text]>
+            - remove <[data.shield]>
         on player picks up bs_gus_spirit:
             - determine passively cancelled
             - if <context.entity.flag[owner]> == <player> || <context.entity.flag[owner].scoreboard_team_name.if_null[0]> == <player.scoreboard_team_name.if_null[1]>:

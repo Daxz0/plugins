@@ -9,14 +9,18 @@ walk_handler:
                 - adjust <player> hide_from_players:<server.online_players>
             # - if <[locy].material.name> == dead_brain_coral:
         on player steps on block flagged:bs.bushes:
-            - define locy <player.location.above[1]>
+            - define locy <player.location.with_pitch[90].ray_trace[range=15].above[1]>
+            - define ent <player>
+            - if <player.has_flag[bs.thrower_active]>:
+                - define ent <player.flag[bs.thrower_active.npc].if_null[<player>]>
+
             - if <[locy].material.name> != tall_grass:
-                - adjust <player> show_to_players:<server.online_players>
+                - adjust <[ent]> show_to_players:<server.online_players>
             - else if <[locy].material.name> == tall_grass:
-                - define ents <player.location.find_players_within[2]>
+                - define ents <[ent].location.find_players_within[2]>
                 - if <[ents].any>:
-                    - adjust <player> show_to_players:<[ents]>
+                    - adjust <[ent]> show_to_players:<[ents]>
                     - foreach <[ents]> as:e:
-                        - adjust <[e]> show_to_players:<player>
+                        - adjust <[e]> show_to_players:<[ent]>
 
 

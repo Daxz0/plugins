@@ -47,9 +47,11 @@ thrower_handler:
             - if <context.dismount>:
                 - determine cancelled
             - define forward <context.forward>
-            - define side <context.sideways.div[5]>
+            - define side <context.sideways.div[8]>
             - define up <context.jump>
             - define stand <player.flag[bs.thrower_active.npc]>
+            # - narrate <[stand].location.distance[<player.flag[bs.test]>]>
+            # - flag <player> bs.test:<[stand].location> expire:10s
             - define location <[stand].location.with_pitch[<[stand].location.pitch>].forward[<[forward].div[4]>].with_y[<[stand].location.y>]>
 
             - if <[side]> != 0:

@@ -90,6 +90,7 @@ edgar:
         - flag <player> bs.shotDelay:!
     ult:
         - inject edgar
+        - flag <player> bs.shotDelay expire:10s
         - spawn item_display[item=air] <player.location> save:dis
         - define dis <entry[dis].spawned_entity>
         - if <player.has_flag[bs.thrower_active]>:
@@ -97,8 +98,8 @@ edgar:
             - teleport <player> <player.flag[bs.thrower_active.npc].location>
             - remove <player.flag[bs.thrower_active.cam]>
             - remove <player.flag[bs.thrower_active.npc]>
-            - cast invisibility remove
             - flag <player> bs.thrower_active:!
+            - cast invisibility remove
         - else:
             - define arcEnd <player.eye_location.forward[<[data.ultRange]>].with_pitch[90].with_y[<player.location.y>].ray_trace[range=10]>
             - if <[arcEnd].find_blocks[water].within[1.5].any> || <[arcEnd].y.abs> <= <player.flag[bs.thrower_active.npc].location.y.abs>:
@@ -113,9 +114,12 @@ edgar:
             - teleport <[dis]> <[p]>
             - if <[loop_index].mod[12]> == 0:
                 - wait 1t
-        - narrate <[timepassed].from_now>
         - wait 6t
+        - flag <player> bs.shotDelay:!
         - remove <[dis]>
+        - adjust <player> speed:<element[1200].proc[speedCalc]>
+        - wait 2.5s
+        - adjust <player> speed:<[data.speed].proc[speedCalc]>
     visualize:
         - while <player.has_flag[bs.thrower_active]>:
             - inject edgar
@@ -131,3 +135,10 @@ edgar:
             - playeffect effect:redstone special_data:0.3|#cacccf offset:0.03 at:<[arc].last.backward_flat[1].right[0.5].points_between[<[arc].last.left[0.5]>].distance[0.2]> quantity:4 targets:<player>
             - wait 1t
 
+bs_edgar_handler:
+    type: world
+    debug: false
+    events:
+        on player steers entity flagged:bs.shotDelay:
+            - if <context.dismount>:
+                - determine passively cancelled

@@ -62,6 +62,15 @@ brawlers_handler:
                             - else:
                                 - flag <player> bs.ammo:+:1
                 - actionbar "<&b><&l><player.flag[bs.character].to_titlecase> <&f>| <&c><player.flag[bs.hp]>/<player.flag[bs.mhp]> <&f>| <&7>Ammo: <&8><player.flag[bs.ammo]>/<player.flag[bs.maxAmmo]>"
+        on delta time secondly:
+            - foreach <server.online_players_flagged[bs.trait.cot]> as:__player:
+                - inventory adjust slot:2 custom_model_data:9<player.flag[bs.superCharge].round_down>
+                - if <player.flag[bs.superCharge]> < 100:
+                    - flag <player> bs.superCharge:+:3
+                - else if <player.flag[bs.superCharge]> >= 100:
+                    - flag <player> bs.superCharge:100
+                - narrate 9<player.flag[bs.superCharge].round_down>
+                - inventory adjust slot:2 custom_model_data:9<player.flag[bs.superCharge].round_down>
         on tick every:10:
             # decay shields
             - foreach <server.online_players_flagged[bs.decay_shield]> as:__player:
